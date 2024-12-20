@@ -1,0 +1,24 @@
+<div class="products">
+  <div class="container">
+    <div class="box">
+      <div
+        class="item"
+        *ngFor="let product of products | paginate : { itemsPerPage: 8, currentPage: p ,} "
+      >
+        <div class="item-image">
+          <img [src]="product.ProductImg" />
+          <span>{{ product.ProductPrice | currency }}</span>
+        </div>
+        <div class="item-info">
+          <h4>{{ product.ProductName }}</h4>
+          <p [ngClass]="product.AvailablePieces <= 10 ? 'danger' : ''">
+            Available : {{ product.AvailablePieces }} Pieces
+          </p>
+          <button type="button" class="view">View</button>
+        </div>
+      </div>
+    </div>
+    <pagination-controls (pageChange)="p = $event" [maxSize]="5">
+    </pagination-controls>
+  </div>
+</div>

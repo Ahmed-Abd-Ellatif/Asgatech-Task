@@ -1,0 +1,54 @@
+// #517AB2
+// #8F8F8F
+.navbar {
+  padding: 10px 0;
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-gray);
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      .logo-img {
+        width: 60px;
+        img {
+          width: 100%;
+        }
+      }
+      p {
+        font-size: 24px;
+        font-weight: 800;
+        color: #8f8f8f;
+      }
+      span {
+        color: #517ab2;
+      }
+    }
+    .links {
+      ul {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        li {
+          list-style: none;
+          a {
+            text-decoration: none;
+            color: #8f8f8f;
+            font-size: 18px;
+            font-weight: 500;
+            transition: all 0.35s ease-in;
+            cursor: pointer;
+            &:hover,
+            &.active {
+              color: #517ab2;
+            }
+          }
+        }
+      }
+    }
+  }
+}

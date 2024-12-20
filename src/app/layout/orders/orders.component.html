@@ -1,0 +1,117 @@
+<div class="container">
+  <button class="add-order" (click)="onShowAddOrder()">Add Order</button>
+  <table class="orders">
+    <tr>
+      <th>Order ID</th>
+      <th>Order Date</th>
+      <th>Payment Type</th>
+      <th>User ID</th>
+      <th>Products</th>
+      <th>Actions</th>
+    </tr>
+    <tr
+      *ngFor="let order of orders | paginate : { itemsPerPage: 10, currentPage: p ,}"
+    >
+      <td>{{ order.OrderId ?? order.id }}</td>
+      <td>{{ order.OrderDate | date : "YYYY-MM-dd  HH:mm aa" }}</td>
+      <td>
+        <span
+          [ngClass]="
+            order.PaymentType == 'online' || order.PaymentType == 'Online'
+              ? 'green'
+              : 'orange'
+          "
+          >{{ order.PaymentType }}</span
+        >
+      </td>
+      <td>{{ order.UserId }}</td>
+      <td>{{ order.Products.length }} items</td>
+      <td>
+        <button (click)="viewDetails(order.OrderId ?? order.id)">View</button>
+        <button class="cancel" (click)="deleteOrder(order.OrderId ?? order.id)">
+          Delete
+        </button>
+      </td>
+    </tr>
+  </table>
+  <pagination-controls (pageChange)="p = $event" [maxSize]="5">
+  </pagination-controls>
+</div>
+
+<!-- =================================== -->
+<!-- ADD ORDER POPUP -->
+<!-- =================================== -->
+
+<div class="overlay" *ngIf="ShowAddOrder">
+  <div class="popup">
+    <h3>Add Order</h3>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <!--  -->
+      <div class="two-inputs-field">
+        <div class="input-field">
+          <label>Payment Type</label>
+          <select formControlName="PaymentType">
+            <option value="online">Online</option>
+            <option value="cash">Cash</option>
+          </select>
+        </div>
+        <!--  -->
+        <div class="input-field">
+          <label>User</label>
+          <select formControlName="UserId">
+            <option selected disabled>Select User</option>
+            <option [value]="user.Id" *ngFor="let user of users">
+              {{ user.Name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!--  -->
+      <div class="two-inputs-field">
+        <div class="input-field">
+          <label>Products</label>
+          <select formControlName="ProductId">
+            <option selected disabled>Select Product</option>
+            <option
+              [value]="product.ProductId"
+              *ngFor="let product of products"
+            >
+              {{ product.ProductName }}
+            </option>
+          </select>
+        </div>
+        <!--  -->
+        <div class="input-field">
+          <label>Quantity</label>
+          <input type="number" formControlName="Quantity" />
+        </div>
+        <div class="input-field">
+          <label></label>
+          <button type="button" (click)="AddToProductsArray()">
+            Add Product
+          </button>
+        </div>
+      </div>
+      <!--  -->
+      <!-- ================================ -->
+      <!-- ================================ -->
+      <table class="orders" *ngIf="addProducts.length">
+        <tr>
+          <th>Product Name</th>
+          <th>Quantity</th>
+        </tr>
+        <tr *ngFor="let Product of addProducts">
+          <td>{{ Product.ProductId }}</td>
+          <td>{{ Product.Quantity }}</td>
+        </tr>
+      </table>
+      <!-- ================================ -->
+      <!-- ================================ -->
+      <button type="submit">SAVE</button>
+      <button type="button" (click)="onShowAddOrder()" class="cancel">
+        cancel
+      </button>
+    </form>
+  </div>
+</div>

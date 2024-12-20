@@ -1,0 +1,90 @@
+<div class="order">
+  <div class="container">
+    <div class="info">
+      <div class="user-info">
+        <img src="/assets/images/avatar.webp" alt="" />
+        <h3>{{ user.Name }}</h3>
+        <p><span>User ID : </span>{{ user.Id }}</p>
+        <p><span>Email : </span>{{ user.Email }}</p>
+        <p><span>Phone : </span>{{ user.Phone }}</p>
+        <p><span>Address : </span>{{ user.Address }}</p>
+        <p>
+          <span>Register Date : </span>
+          {{ user.RegisterDate | date : "YYYY-MM-dd  HH:mm aa" }}
+        </p>
+      </div>
+      <div class="order-info">
+        <h3>Order Details</h3>
+
+        <p><span>Order ID : </span>{{ order.OrderId ?? order.id }}</p>
+        <p><span>User ID : </span>{{ order.UserId }}</p>
+        <p><span>Products : </span>{{ order.Products.length }} items</p>
+
+        <p>
+          <span>Order Date : </span>
+          {{ order.OrderDate | date : "YYYY-MM-dd  HH:mm aa" }}
+        </p>
+        <p
+          [ngClass]="
+            order.PaymentType == 'online' || order.PaymentType == 'Online'
+              ? 'green'
+              : 'orange'
+          "
+        >
+          <span>Payment : </span>{{ order.PaymentType }}
+        </p>
+      </div>
+    </div>
+
+    <!-- LIST -->
+    <table class="orders">
+      <tr>
+        <th>Product ID</th>
+        <th>Product Name</th>
+        <th>Product Image</th>
+        <th>Quantity</th>
+        <th>Edit</th>
+      </tr>
+      <tr *ngFor="let product of products">
+        <td>{{ product.ProductId }}</td>
+        <td>{{ product.ProductName }}</td>
+        <td><img style="width: 50px" [src]="product.ProductImg" /></td>
+        <td>{{ product.Quantity }}</td>
+        <td>
+          <button type="button" (click)="onShowEditQuantity(product)">
+            Edit
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="showEditQuantity">
+  <div class="popup">
+    <h3>Edit Quantity</h3>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="input-field">
+        <label>Product Id</label>
+        <input type="text" readonly formControlName="ProductId" />
+      </div>
+
+      <div class="input-field">
+        <label>Product Name</label>
+        <input type="text" readonly formControlName="ProductName" />
+      </div>
+
+      <div class="input-field">
+        <label>Quantity</label>
+        <input type="number" formControlName="Quantity" />
+      </div>
+
+      <!-- ================================ -->
+      <!-- ================================ -->
+      <button type="submit">SAVE</button>
+      <button type="button" (click)="showEditQuantity = false" class="cancel">
+        cancel
+      </button>
+    </form>
+  </div>
+</div>
